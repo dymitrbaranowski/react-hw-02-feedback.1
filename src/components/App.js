@@ -1,30 +1,73 @@
 import React, { Component } from 'react';
-import Container from './Container';
+
+import { Section } from './Section/Section';
+import { Statistics } from './Statistics/Statistics';
+import { Notification } from './Notification/Notification';
+import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 
 class App extends Component {
   state = {
-    name: '',
+    good: 0,
+    neutral: 0,
+    bad: 0,
   };
 
-  handleNameChange = event => {
-    // console.log(event.currentTarget.value);
-
-    this.setState({ name: event.currentTarget.value });
+  handleFeedback = option => {
+    this.setState(prevState => ({
+      [option]: prevState[option] + 1,
+    }));
   };
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
+  };
+
+  countPositivePercentage = () => {
+    const { good } = this.state;
+    const totalFeedback = this.countTotalFeedback();
+    if (totalFeedback === 0) {
+      return 0;
+    }
+    return Math.round((good / totalFeedback) * 100);
+  };
+
   render() {
+    const { good, neutral, bad } = this.state;
+    const totalFeedback = this.countTotalFeedback();
+    const positivePercentage = this.countPositivePercentage();
     return (
-      <Container>
-        <form>
-          <label htmlFore="">
-            Имя{' '}
-            <input
-              type="text"
-              value={this.state.name}
-              onChange={this.handleNameChange}
+      <div
+        style={{
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: 40,
+          color: '#010101',
+        }}
+      >
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            options={Object.keys(this.state)}
+            onLeaveFeedback={this.handleFeedback}
+          />
+        </Section>
+
+        {this.countTotalFeedback() ? (
+          <Section title="Statistics">
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              totalFeedback={totalFeedback}
+              positivePercentage={positivePercentage}
             />
-          </label>
-        </form>
-      </Container>
+          </Section>
+        ) : (
+          <Notification message="There is no feedback"></Notification>
+        )}
+      </div>
     );
   }
 }
