@@ -4,6 +4,8 @@ import { Section } from './Section/Section';
 import { Statistics } from './Statistics/Statistics';
 import { Notification } from './Notification/Notification';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
+import Header from './Header/Header';
+import Counter from './Counter/Counter';
 
 class App extends Component {
   state = {
@@ -36,37 +38,41 @@ class App extends Component {
     const totalFeedback = this.countTotalFeedback();
     const positivePercentage = this.countPositivePercentage();
     return (
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: 40,
-          color: '#010101',
-        }}
-      >
-        <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={Object.keys(this.state)}
-            onLeaveFeedback={this.handleFeedback}
-          />
-        </Section>
+      // <div
+      //   style={{
+      //     height: '100vh',
+      //     display: 'flex',
+      //     flexDirection: 'column',
+      //     justifyContent: 'center',
+      //     alignItems: 'center',
+      //     fontSize: 40,
+      //     color: '#010101',
+      //   }}
+      // >
+      //   <Section title="Please leave feedback">
+      //     <FeedbackOptions
+      //       options={Object.keys(this.state)}
+      //       onLeaveFeedback={this.handleFeedback}
+      //     />
+      //   </Section>
 
-        {this.countTotalFeedback() ? (
-          <Section title="Statistics">
-            <Statistics
-              good={good}
-              neutral={neutral}
-              bad={bad}
-              totalFeedback={totalFeedback}
-              positivePercentage={positivePercentage}
-            />
-          </Section>
-        ) : (
-          <Notification message="There is no feedback"></Notification>
-        )}
+      //   {this.countTotalFeedback() ? (
+      //     <Section title="Statistics">
+      //       <Statistics
+      //         good={good}
+      //         neutral={neutral}
+      //         bad={bad}
+      //         totalFeedback={totalFeedback}
+      //         positivePercentage={positivePercentage}
+      //       />
+      //     </Section>
+      //   ) : (
+      //     <Notification message="There is no feedback"></Notification>
+      //   )}
+      // </div>
+      <div className="container">
+        <Header />
+        <Counter />
       </div>
     );
   }
